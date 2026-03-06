@@ -297,10 +297,35 @@ Before delegating to `speckit.verify`, check if the extension is installed:
 2. It runs 7 verification checks: task completion, file existence, requirement coverage, scenario & test coverage, spec intent alignment, constitution alignment, design & structure consistency
 3. It outputs a verification report with findings, metrics, and next actions
 4. Present the summary to the user:
-   - **No CRITICAL issues**: *"Verification passed. Ready to run CI?"*
-   - **CRITICAL issues found**: *"Verification found {N} critical issues."* -- list them and ask whether to (a) re-run implementation to address findings, (b) proceed to CI anyway, or (c) abort
-5. After verification completes, create a marker file `{FEATURE_DIR}/.verify-done` containing the timestamp
-6. Mark Phase 9 complete and proceed to Phase 10 (CI & Dev)
+   - **No findings**: *"Verification passed. Ready to run CI?"* -- proceed to Phase 10
+   - **Findings exist**: Show the findings grouped by severity (CRITICAL, WARNING, INFO) and enter the **Implement-Verify loop** below
+
+### Implement-Verify Loop
+
+When verification produces findings, run a remediation loop:
+
+```
+repeat:
+  1. Present findings to user
+  2. Ask: "Re-run implementation to address these findings? (yes / skip / abort)"
+     - yes   -> delegate to speckit.implement with findings as context, then re-run speckit.verify
+     - skip  -> exit loop, proceed to Phase 10 with current state
+     - abort -> stop the workflow entirely
+  3. After re-verify, check findings again
+until: no findings remain OR user says skip/abort
+```
+
+Rules for the loop:
+- **Pass findings as context**: When delegating to `speckit.implement`, include the verification findings so it knows exactly what to fix. Prepend: *"Address the following verification findings: {findings list}"*
+- **Suppress sub-agent handoffs** (Operating Rule 6 still applies)
+- **Track iterations**: Show the loop count each time -- *"Implement-Verify iteration {N}: {findings_count} findings remaining"*
+- **Cap at 3 iterations**: After 3 rounds, if findings persist, warn the user: *"3 remediation iterations completed with {N} findings still remaining. These may require manual intervention. Proceed to CI, or continue?"*
+- **Human gate every iteration**: Never auto-loop -- always ask before re-implementing
+- **Delta reporting**: After each re-verify, show what changed -- *"Fixed: {N}, New: {N}, Remaining: {N}"*
+
+After the loop exits (no findings or user skips):
+1. Create a marker file `{FEATURE_DIR}/.verify-done` containing the timestamp and final findings count
+2. Mark Phase 9 complete and proceed to Phase 10 (CI & Dev)
 
 ## Phase 10: CI & Dev Servers
 
