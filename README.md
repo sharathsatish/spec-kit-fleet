@@ -102,13 +102,14 @@ After installation, optionally customize settings by editing `.specify/extension
 parallel:
   max_concurrency: 3
 
-# Model preferences
+# Model preferences -- set to exact model names for your IDE, or use defaults
+# Examples:
+#   VS Code Copilot:  "Claude Opus 4.6 (copilot)", "Claude Sonnet 4.6 (copilot)"
+#   Claude Code:      "claude-sonnet-4-20250514", "claude-opus-4-20250514"
+#   Cursor:           "claude-sonnet-4", "gpt-4o"
 models:
-  primary: "Claude Opus 4.6 (copilot)"
-  review:
-    - "Claude Sonnet 4.6 (copilot)"
-    - "GPT-5.3 Codex (copilot)"
-    - "GPT 5.4 (copilot)"
+  primary: "auto"     # Uses whatever model is running the fleet
+  review: "ask"       # Prompts you on first run to pick a different model
 
 # Verify extension auto-install prompt
 verify:
@@ -119,10 +120,16 @@ verify:
 | Setting | Default | Description |
 |---------|---------|-------------|
 | `parallel.max_concurrency` | `3` | Max subagents dispatched simultaneously |
-| `models.primary` | Claude Opus 4.6 | Model for the fleet orchestrator |
-| `models.review` | Sonnet 4.6 -> GPT-5.3 -> GPT 5.4 | Review model fallback chain |
+| `models.primary` | `"auto"` | Uses the current model; set an explicit name to override |
+| `models.review` | `"ask"` | Prompts on first run; set a model name (or list) to skip the prompt |
 | `verify.auto_prompt_install` | `true` | Prompt to install verify extension if missing |
 | `verify.install_url` | GitHub archive URL | Verify extension download URL |
+
+### Model Setup
+
+On first run, the fleet detects your platform and asks which model to use for the cross-model review (Phase 7). The review should use a **different** model than the primary to catch blind spots -- e.g., if you're on Claude Opus, use GPT or Sonnet for review.
+
+You can skip the prompt by setting explicit model names in the config file.
 
 ## Workflow Phases
 
@@ -174,7 +181,7 @@ The fleet runs `check-prerequisites.ps1 -Json -PathsOnly` to discover `FEATURE_D
 
 ### Review phase uses the wrong model
 
-Model selection is in the `commands/review.md` frontmatter. After installation, the registered agent file is in `.github/agents/speckit.fleet.review.md`. The `model` field accepts an array -- the first available model is used.
+On first run, the fleet asks which model to use for review. To change it permanently, edit `models.review` in `.specify/extensions/fleet/fleet-config.yml` with your IDE's model identifier. Set to `"ask"` to be prompted again next time.
 
 ### Verify extension not found
 

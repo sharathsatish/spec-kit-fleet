@@ -9,18 +9,23 @@ parallel:
   max_concurrency: 3
 
 # Model preferences
-# The fleet command itself runs on the primary model.
-# The review command uses a different model for cross-model evaluation.
+# On first run, the fleet will ask you to configure these.
+# Set "auto" to be prompted each time, or specify exact model names for your IDE.
+#
+# Examples by platform:
+#   VS Code Copilot:  "Claude Opus 4.6 (copilot)", "Claude Sonnet 4.6 (copilot)"
+#   Claude Code:      "claude-sonnet-4-20250514", "claude-opus-4-20250514"
+#   Cursor:           "claude-sonnet-4", "gpt-4o"
+#   Other:            Use whatever model identifier your IDE supports
 models:
   # Primary model for the fleet orchestrator (Phase 1-6, 8-10)
-  primary: "Claude Opus 4.6 (copilot)"
+  # Set to "auto" to use whatever model the IDE defaults to.
+  primary: "auto"
 
-  # Review model chain (Phase 7) -- tries in order until one is available.
-  # Using a different model from primary provides blind-spot detection.
-  review:
-    - "Claude Sonnet 4.6 (copilot)"
-    - "GPT-5.3 Codex (copilot)"
-    - "GPT 5.4 (copilot)"
+  # Review model (Phase 7) -- should be DIFFERENT from primary for blind-spot detection.
+  # Set to "ask" to be prompted on first run.
+  # Can be a single string or a list (tries in order until one is available).
+  review: "ask"
 
 # Verify extension settings
 verify:

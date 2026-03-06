@@ -13,7 +13,6 @@ agents:
   - speckit.fleet.review
   - speckit.implement
   - speckit.verify
-model: 'Claude Opus 4.6 (copilot)'
 user-invocable: true
 disable-model-invocation: true
 ---
@@ -133,7 +132,27 @@ Run `{SCRIPT}` from the repo root to get the feature directory paths as JSON. Pa
 
 If the script fails (e.g., not on a feature branch), ask the user for the feature description and start from Phase 1.
 
-### Step 2: Probe artifacts in FEATURE_DIR
+### Step 2: Check model configuration
+
+Check if `{FEATURE_DIR}/../../../.specify/extensions/fleet/fleet-config.yml` (or the project's config location) has model settings. If the config file doesn't exist or models are set to defaults:
+
+1. **Detect the platform**: Identify which IDE/agent platform you're running in (VS Code Copilot, Claude Code, Cursor, etc.) based on available context.
+
+2. **Primary model**: If `models.primary` is `"auto"`, use whatever model you are currently running as. No action needed -- you ARE the primary model.
+
+3. **Review model**: If `models.review` is `"ask"`, prompt the user:
+   > **Model setup (one-time):** The cross-model review (Phase 7) works best with a *different* model than the one running the fleet, to catch blind spots.
+   >
+   > What model should I use for the review phase? Suggestions:
+   > - A different model family (e.g., if you're on Claude, use GPT or Gemini)
+   > - A different tier (e.g., if you're on Opus, use Sonnet)
+   > - "skip" to skip Phase 7 entirely
+   >
+   > You can also set this permanently in your fleet config.
+
+4. **Store the choice**: Remember the user's model selection for the duration of this conversation. If they want to persist it, suggest editing the config file.
+
+### Step 3: Probe artifacts in FEATURE_DIR
 
 Check these paths **in order** using the `read` tool. Each check is a simple file/directory existence test:
 
@@ -150,7 +169,7 @@ Check these paths **in order** using the `read` tool. Each check is a simple fil
 | Verify extension | `.specify/extensions/verify/extension.yml` | File exists? (extension installed) |
 | Verification | `{FEATURE_DIR}/.verify-done` | Marker file exists? (created by fleet after verify completes) |
 
-### Step 3: Determine the resume phase
+### Step 4: Determine the resume phase
 
 Walk the artifact signals **top-down**. The first phase whose artifact is **missing** is where work resumes:
 
@@ -167,7 +186,7 @@ if .verify-done missing      -> resume at Phase 9 (Verify)
 if all done                  -> resume at Phase 10 (CI & Dev)
 ```
 
-### Step 4: Present status and confirm
+### Step 5: Present status and confirm
 
 Show the user a status table and the detected resume point:
 
@@ -241,7 +260,7 @@ For each phase:
 
 This phase uses a **different model** than the one that generated plan.md and tasks.md, providing a fresh perspective to catch blind spots.
 
-1. Delegate to `speckit.fleet.review` -- it runs on Claude Sonnet 4.6 (fallback: GPT-5.3 Codex -> GPT 5.4) and is **read-only**
+1. Delegate to `speckit.fleet.review` -- it runs on the **review model** configured in Step 2 (a different model than the primary) and is **read-only**
 2. The review agent reads spec.md, plan.md, tasks.md, checklists/, and remediation.md
 3. It evaluates 7 dimensions: spec-plan alignment, plan-tasks completeness, dependency ordering, parallelization correctness, feasibility & risk, standards compliance, implementation readiness
 4. It outputs a structured review report with PASS/WARN/FAIL verdicts per dimension

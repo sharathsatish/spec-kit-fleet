@@ -3,7 +3,6 @@ description: "Cross-model evaluation of plan.md and tasks.md before implementati
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json --paths-only
   ps: scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly
-model: ['Claude Sonnet 4.6 (copilot)', 'GPT-5.3 Codex (copilot)', 'GPT 5.4 (copilot)']
 user-invocable: false
 agents: []
 ---
@@ -80,8 +79,8 @@ Evaluate across these 7 dimensions. For each, assign a verdict: **PASS**, **WARN
 
 **Feature**: {feature name from spec.md}
 **Artifacts reviewed**: spec.md, plan.md, tasks.md, [others if present]
-**Review model**: {your model name} (deliberately different from generating model)
-**Generating model**: Claude Opus 4.6 (primary fleet model)
+**Review model**: {your model name} (should be different from the model that generated the artifacts)
+**Generating model**: {model used for Phases 1-6, if known}
 
 ## Summary
 
