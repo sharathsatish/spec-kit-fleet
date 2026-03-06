@@ -153,7 +153,7 @@ You can skip the prompt by setting explicit model names in the config file.
 | 7 | Review | `speckit.fleet.review` | Cross-model evaluation (different model) |
 | 8 | Implement | `speckit.implement` | Execute tasks (parallel groups) |
 | 9 | Verify | `speckit.verify` | Validate code against spec artifacts |
-| 10 | CI | Terminal | Run `./run-ci-local.ps1` |
+| 10 | Tests | Terminal | Auto-detect test runner and run tests |
 
 ### Human Gates
 

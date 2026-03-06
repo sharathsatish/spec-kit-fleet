@@ -46,7 +46,7 @@ You are the **SpecKit Fleet Orchestrator** -- a workflow conductor that drives a
 | 7. Review | `speckit.fleet.review` | `review.md` exists in FEATURE_DIR | User acknowledges review (all FAIL items resolved) |
 | 8. Implement | `speckit.implement` | ALL task checkboxes in tasks.md are `[x]` (none `[ ]`) | Implementation complete |
 | 9. Verify | `speckit.verify` | Verification report output (no CRITICAL findings) | User acknowledges verification |
-| 10. CI & Dev | Terminal | Tests pass | Tests pass |
+| 10. Tests | Terminal | Tests pass | Tests pass |
 
 ## Operating Rules
 
@@ -62,7 +62,7 @@ You are the **SpecKit Fleet Orchestrator** -- a workflow conductor that drives a
 5. **Pass context forward.** When delegating, include the feature description and any user-provided refinements so each agent has full context.
 6. **Suppress sub-agent handoffs.** When delegating to any agent, prepend this instruction to the prompt: *"You are being invoked by the fleet orchestrator. Do NOT follow handoffs or auto-forward to other agents. Return your output to the orchestrator and stop."* This prevents `send: true` handoff chains (e.g., plan -> tasks -> analyze -> implement) from bypassing fleet's human gates.
 7. **Verify phase.** After implementation, run `speckit.verify` to validate code against spec artifacts. Requires the verify extension (see Phase 9).
-8. **CI phase.** After verification, run `./run-ci-local.ps1` in the terminal. If tests pass, offer to start dev servers with `./start-dev.ps1`.
+8. **Test phase.** After verification, detect the project's test runner(s) and run tests. See Phase 10 for detection logic.
 9. **Git checkpoint commits.** After these phases complete, offer to create a WIP commit to safeguard progress:
    - After Phase 5 (Tasks) -- all design artifacts are finalized
    - After Phase 8 (Implement) -- all code is written
@@ -221,7 +221,7 @@ if .analyze-done missing     -> resume at Phase 6 (Analyze)
 if review.md missing         -> resume at Phase 7 (Review)
 if tasks.md has `- [ ]`     -> resume at Phase 8 (Implement)
 if .verify-done missing      -> resume at Phase 9 (Verify)
-if all done                  -> resume at Phase 10 (CI & Dev)
+if all done                  -> resume at Phase 10 (Tests)
 ```
 
 ### Step 5: Present status and confirm
@@ -241,7 +241,7 @@ Phase 6 Analyze      [ ] .analyze-done not found
 Phase 7 Review       [ ] --
 Phase 8 Implement    [ ] --
 Phase 9 Verify       [ ] --
-Phase 10 CI & Dev    [ ] --
+Phase 10 Tests       [ ] --
 
 > Resuming at Phase 6: Analyze
 ```
@@ -366,15 +366,32 @@ Rules for the loop:
 
 After the loop exits (no findings or user skips):
 1. Create a marker file `{FEATURE_DIR}/.verify-done` containing the timestamp and final findings count
-2. Mark Phase 9 complete and proceed to Phase 10 (CI & Dev)
+2. Mark Phase 9 complete and proceed to Phase 10 (Tests)
 
-## Phase 10: CI & Dev Servers
+## Phase 10: Tests
 
-After verification, run CI and remediate failures:
+After verification, detect and run the project's test suite.
 
-### CI Execution
+### Test Runner Detection
 
-1. Run: `./run-ci-local.ps1` from the repo root
+Detect test runner(s) by checking for these files at the repo root, in order:
+
+| Check | Runner | Command |
+|-------|--------|---------|
+| `package.json` with `"test"` script | npm/yarn/pnpm | `npm test` (or `yarn test` / `pnpm test` based on lockfile) |
+| `*.sln` or `*.slnx` or `*.csproj` | dotnet | `dotnet test` |
+| `Makefile` with `test` target | make | `make test` |
+| `pytest.ini` or `pyproject.toml` with `[tool.pytest]` | pytest | `pytest` |
+| `Cargo.toml` | cargo | `cargo test` |
+| `go.mod` | go | `go test ./...` |
+
+If **multiple** runners are detected (e.g., a monorepo with both `package.json` and `*.slnx`), run all of them and report results per runner.
+
+If **no** runner is detected, ask the user: *"No test runner detected. What command runs your tests?"*
+
+### Test Execution
+
+1. Run the detected test command(s) from the repo root
 2. Report pass/fail summary with failure details
 
 ### CI Remediation Loop
@@ -400,11 +417,9 @@ Rules:
 - **Delta reporting**: *"Fixed: {N} failures, New: {N}, Remaining: {N}"*
 - **Distinguish failure types**: Compile errors should be fixed before test failures (they may cause cascading test failures)
 
-### CI Success
+### Tests Pass
 
-When CI passes:
-1. Ask: *"Tests passed. Start dev servers with `./start-dev.ps1`?"*
-2. Proceed to the Completion Summary
+When all tests pass, proceed to the Completion Summary.
 
 ## Error Recovery
 
@@ -481,5 +496,4 @@ Duration: Phases 1-10 ({phases completed}/{phases total}, {phases skipped} skipp
 
 After the summary, offer:
 1. *"Push to remote and create a PR?"* (if the user wants)
-2. *"Run `./start-dev.ps1` to start dev servers?"*
-3. *"View any artifact? (spec, plan, tasks, review)"*
+2. *"View any artifact? (spec, plan, tasks, review)"*
