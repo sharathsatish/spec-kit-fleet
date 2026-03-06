@@ -1,22 +1,22 @@
-# Fleet Orchestrator — Spec-Kit Extension
+# Fleet Orchestrator -- Spec-Kit Extension
 
 Orchestrate a full feature lifecycle with human-in-the-loop gates across all SpecKit phases.
 
 ```
-specify → clarify → plan → checklist → tasks → analyze → review → implement → verify → CI
+specify -> clarify -> plan -> checklist -> tasks -> analyze -> review -> implement -> verify -> CI
 ```
 
 The fleet orchestrator chains 10 phases into a single command, detecting partially complete work and resuming from the right phase. It dispatches up to 3 parallel subagents during Plan and Implement, and uses a **cross-model review** before implementation to catch blind spots.
 
 ## Features
 
-- **10-phase workflow** — end-to-end from idea to CI-passing code
-- **Human gates** — approve, revise, skip, or abort after every phase
-- **Mid-workflow resume** — detects existing artifacts and picks up where you left off
-- **Stale artifact detection** — warns when upstream changes invalidate downstream files
-- **Parallel execution** — up to 3 concurrent subagents for `[P]`-marked tasks
-- **Cross-model review** — Phase 7 uses a different model to evaluate plan + tasks
-- **Verify integration** — auto-prompts to install the [verify extension](https://github.com/ismaelJimenez/spec-kit-verify) if missing
+- **10-phase workflow** -- end-to-end from idea to CI-passing code
+- **Human gates** -- approve, revise, skip, or abort after every phase
+- **Mid-workflow resume** -- detects existing artifacts and picks up where you left off
+- **Stale artifact detection** -- warns when upstream changes invalidate downstream files
+- **Parallel execution** -- up to 3 concurrent subagents for `[P]`-marked tasks
+- **Cross-model review** -- Phase 7 uses a different model to evaluate plan + tasks
+- **Verify integration** -- auto-prompts to install the [verify extension](https://github.com/ismaelJimenez/spec-kit-verify) if missing
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ specify extension add --dev /path/to/spec-kit-fleet
 
 ```bash
 specify extension list
-# Should show: fleet (1.0.0) — Fleet Orchestrator
+# Should show: fleet (1.0.0) -- Fleet Orchestrator
 ```
 
 After installation, the following commands are registered:
@@ -75,12 +75,12 @@ Or with no arguments to auto-detect progress on the current feature branch:
 The fleet automatically detects existing artifacts on every invocation. If you're on a feature branch with `spec.md` and `plan.md` already created, it will show:
 
 ```
-Phase 1 Specify      ✅ spec.md found
-Phase 2 Clarify      ✅ ## Clarifications present
-Phase 3 Plan         ✅ plan.md found
-Phase 4 Checklist    ⬜ —
+Phase 1 Specify      [x] spec.md found
+Phase 2 Clarify      [x] ## Clarifications present
+Phase 3 Plan         [x] plan.md found
+Phase 4 Checklist    [ ] --
 ...
-▶ Resuming at Phase 4: Checklist
+> Resuming at Phase 4: Checklist
 ```
 
 You can confirm or override to any phase.
@@ -120,7 +120,7 @@ verify:
 |---------|---------|-------------|
 | `parallel.max_concurrency` | `3` | Max subagents dispatched simultaneously |
 | `models.primary` | Claude Opus 4.6 | Model for the fleet orchestrator |
-| `models.review` | Sonnet 4.6 → GPT-5.3 → GPT 5.4 | Review model fallback chain |
+| `models.review` | Sonnet 4.6 -> GPT-5.3 -> GPT 5.4 | Review model fallback chain |
 | `verify.auto_prompt_install` | `true` | Prompt to install verify extension if missing |
 | `verify.install_url` | GitHub archive URL | Verify extension download URL |
 
@@ -142,10 +142,10 @@ verify:
 ### Human Gates
 
 After every phase, you're asked to:
-- **Approve** — proceed to the next phase
-- **Revise** — re-run with feedback
-- **Skip** — skip this phase
-- **Abort** — stop the workflow
+- **Approve** -- proceed to the next phase
+- **Revise** -- re-run with feedback
+- **Skip** -- skip this phase
+- **Abort** -- stop the workflow
 
 ### Parallel Execution
 
@@ -174,7 +174,7 @@ The fleet runs `check-prerequisites.ps1 -Json -PathsOnly` to discover `FEATURE_D
 
 ### Review phase uses the wrong model
 
-Model selection is in the `commands/review.md` frontmatter. After installation, the registered agent file is in `.github/agents/speckit.fleet.review.md`. The `model` field accepts an array — the first available model is used.
+Model selection is in the `commands/review.md` frontmatter. After installation, the registered agent file is in `.github/agents/speckit.fleet.review.md`. The `model` field accepts an array -- the first available model is used.
 
 ### Verify extension not found
 

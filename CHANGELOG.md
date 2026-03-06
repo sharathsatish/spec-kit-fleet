@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Fleet orchestrator command (`speckit.fleet.run`) with 10-phase lifecycle
-  - Specify → Clarify → Plan → Checklist → Tasks → Analyze → Review → Implement → Verify → CI
+  - Specify -> Clarify -> Plan -> Checklist -> Tasks -> Analyze -> Review -> Implement -> Verify -> CI
 - Cross-model review command (`speckit.fleet.review`) with 7-dimension evaluation
 - Human-in-the-loop gates after every phase (approve / revise / skip / abort)
 - Artifact detection and mid-workflow resume on fresh conversations

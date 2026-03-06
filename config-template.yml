@@ -15,7 +15,7 @@ models:
   # Primary model for the fleet orchestrator (Phase 1-6, 8-10)
   primary: "Claude Opus 4.6 (copilot)"
 
-  # Review model chain (Phase 7) — tries in order until one is available.
+  # Review model chain (Phase 7) -- tries in order until one is available.
   # Using a different model from primary provides blind-spot detection.
   review:
     - "Claude Sonnet 4.6 (copilot)"
