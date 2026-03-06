@@ -1,0 +1,58 @@
+schema_version: "1.0"
+
+extension:
+  id: "fleet"
+  name: "Fleet Orchestrator"
+  version: "1.0.0"
+  description: "Orchestrate a full feature lifecycle with human-in-the-loop gates across all SpecKit phases."
+  author: "sharath"
+  repository: "https://github.com/commerce-ecosystems/spec-kit-fleet"
+  license: "MIT"
+  homepage: "https://github.com/commerce-ecosystems/spec-kit-fleet"
+
+requires:
+  speckit_version: ">=0.1.0"
+
+  commands:
+    - "speckit.specify"
+    - "speckit.clarify"
+    - "speckit.plan"
+    - "speckit.checklist"
+    - "speckit.tasks"
+    - "speckit.analyze"
+    - "speckit.implement"
+
+provides:
+  commands:
+    - name: "speckit.fleet.run"
+      file: "commands/fleet.md"
+      description: "Orchestrate a full feature lifecycle with human-in-the-loop checkpoints through all SpecKit phases"
+      aliases: ["speckit.fleet"]
+
+    - name: "speckit.fleet.review"
+      file: "commands/review.md"
+      description: "Cross-model evaluation of plan.md and tasks.md before implementation"
+      aliases: ["speckit.review"]
+
+  config:
+    - name: "fleet-config.yml"
+      template: "config-template.yml"
+      description: "Fleet orchestrator configuration (parallelism, models, verify settings)"
+      required: false
+
+hooks:
+  after_tasks:
+    command: "speckit.fleet.review"
+    optional: true
+    prompt: "Run cross-model review to evaluate plan and tasks before implementation?"
+    description: "Pre-implementation review gate"
+
+tags:
+  - orchestration
+  - workflow
+  - human-in-the-loop
+  - parallel
+
+defaults:
+  parallel:
+    max_concurrency: 3

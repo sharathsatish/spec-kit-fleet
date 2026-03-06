@@ -1,0 +1,32 @@
+# Fleet Orchestrator Configuration
+# Copy this file to .specify/extensions/fleet/fleet-config.yml and customize.
+
+# Parallel execution settings
+parallel:
+  # Maximum number of subagents dispatched simultaneously during Plan & Implement phases.
+  # Tasks marked [P] in tasks.md that form independent groups will be fanned out
+  # up to this limit. Range: 1-3.
+  max_concurrency: 3
+
+# Model preferences
+# The fleet command itself runs on the primary model.
+# The review command uses a different model for cross-model evaluation.
+models:
+  # Primary model for the fleet orchestrator (Phase 1-6, 8-10)
+  primary: "Claude Opus 4.6 (copilot)"
+
+  # Review model chain (Phase 7) — tries in order until one is available.
+  # Using a different model from primary provides blind-spot detection.
+  review:
+    - "Claude Sonnet 4.6 (copilot)"
+    - "GPT-5.3 Codex (copilot)"
+    - "GPT 5.4 (copilot)"
+
+# Verify extension settings
+verify:
+  # If the verify extension is not installed, prompt the user to install it.
+  # Set to false to always skip Phase 9 (Verify).
+  auto_prompt_install: true
+
+  # URL for the verify extension archive (used in the install prompt).
+  install_url: "https://github.com/ismaelJimenez/spec-kit-verify/archive/refs/tags/v1.0.0.zip"

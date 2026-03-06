@@ -1,0 +1,5 @@
+# Spec-Kit Extension: Fleet Orchestrator
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
