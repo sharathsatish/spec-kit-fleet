@@ -11,11 +11,20 @@ The fleet orchestrator chains 10 phases into a single command, detecting partial
 ## Features
 
 - **10-phase workflow** -- end-to-end from idea to CI-passing code
-- **Human gates** -- approve, revise, skip, or abort after every phase
+- **Human gates** -- approve, revise, skip, abort, or rollback after every phase
 - **Mid-workflow resume** -- detects existing artifacts and picks up where you left off
+- **Artifact integrity checks** -- validates file sizes and expected sections during probe
 - **Stale artifact detection** -- warns when upstream changes invalidate downstream files
 - **Parallel execution** -- up to 3 concurrent subagents for `[P]`-marked tasks
 - **Cross-model review** -- Phase 7 uses a different model to evaluate plan + tasks
+- **Implement-verify loop** -- Phase 9 auto-remediates findings (up to 3 iterations)
+- **CI remediation loop** -- Phase 10 auto-fixes test/build failures (up to 3 iterations)
+- **Phase rollback** -- jump back to any earlier phase with downstream invalidation
+- **Branch safety** -- pre-flight checks for uncommitted changes, detached HEAD, branch freshness
+- **Git checkpoints** -- optional WIP commits after design, implementation, and verification
+- **Context budget awareness** -- detects long sessions and suggests fresh-chat resume
+- **Completion summary** -- structured report with artifact stats, quality gates, and git status
+- **IDE-agnostic** -- works with VS Code Copilot, Claude Code, Cursor, and other platforms
 - **Verify integration** -- auto-prompts to install the [verify extension](https://github.com/ismaelJimenez/spec-kit-verify) if missing
 
 ## Prerequisites
@@ -31,7 +40,7 @@ The fleet orchestrator chains 10 phases into a single command, detecting partial
 ### From GitHub Release
 
 ```bash
-specify extension add fleet --from https://github.com/commerce-ecosystems/spec-kit-fleet/archive/refs/tags/v1.0.0.zip
+specify extension add fleet --from https://github.com/sharathsatish/spec-kit-fleet/archive/refs/tags/v1.0.0.zip
 ```
 
 ### Local Development

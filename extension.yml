@@ -5,10 +5,10 @@ extension:
   name: "Fleet Orchestrator"
   version: "1.0.0"
   description: "Orchestrate a full feature lifecycle with human-in-the-loop gates across all SpecKit phases."
-  author: "sharath"
-  repository: "https://github.com/commerce-ecosystems/spec-kit-fleet"
+  author: "sharathsatish"
+  repository: "https://github.com/sharathsatish/spec-kit-fleet"
   license: "MIT"
-  homepage: "https://github.com/commerce-ecosystems/spec-kit-fleet"
+  homepage: "https://github.com/sharathsatish/spec-kit-fleet"
 
 requires:
   speckit_version: ">=0.1.0"

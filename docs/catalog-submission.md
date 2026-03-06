@@ -15,13 +15,13 @@ Add this under `"extensions"` in `extensions/catalog.community.json` in the
   "name": "Fleet Orchestrator",
   "id": "fleet",
   "description": "Orchestrate a full feature lifecycle with human-in-the-loop gates across all SpecKit phases.",
-  "author": "sharath",
+  "author": "sharathsatish",
   "version": "1.0.0",
-  "download_url": "https://github.com/commerce-ecosystems/spec-kit-fleet/archive/refs/tags/v1.0.0.zip",
-  "repository": "https://github.com/commerce-ecosystems/spec-kit-fleet",
-  "homepage": "https://github.com/commerce-ecosystems/spec-kit-fleet",
-  "documentation": "https://github.com/commerce-ecosystems/spec-kit-fleet/blob/main/README.md",
-  "changelog": "https://github.com/commerce-ecosystems/spec-kit-fleet/blob/main/CHANGELOG.md",
+  "download_url": "https://github.com/sharathsatish/spec-kit-fleet/archive/refs/tags/v1.0.0.zip",
+  "repository": "https://github.com/sharathsatish/spec-kit-fleet",
+  "homepage": "https://github.com/sharathsatish/spec-kit-fleet",
+  "documentation": "https://github.com/sharathsatish/spec-kit-fleet/blob/main/README.md",
+  "changelog": "https://github.com/sharathsatish/spec-kit-fleet/blob/main/CHANGELOG.md",
   "license": "MIT",
   "requires": {
     "speckit_version": ">=0.1.0",
@@ -52,7 +52,7 @@ Add this under `"extensions"` in `extensions/catalog.community.json` in the
 Insert alphabetically in the Available Extensions table:
 
 ```markdown
-| Fleet Orchestrator | Orchestrate a full feature lifecycle with human-in-the-loop gates | [spec-kit-fleet](https://github.com/commerce-ecosystems/spec-kit-fleet) |
+| Fleet Orchestrator | Orchestrate a full feature lifecycle with human-in-the-loop gates | [spec-kit-fleet](https://github.com/sharathsatish/spec-kit-fleet) |
 ```
 
 ---
@@ -65,8 +65,8 @@ Insert alphabetically in the Available Extensions table:
 **Extension Name**: Fleet Orchestrator
 **Extension ID**: fleet
 **Version**: 1.0.0
-**Author**: sharath
-**Repository**: https://github.com/commerce-ecosystems/spec-kit-fleet
+**Author**: sharathsatish
+**Repository**: https://github.com/sharathsatish/spec-kit-fleet
 
 ### Description
 Orchestrate a full feature lifecycle with human-in-the-loop gates across all
@@ -89,7 +89,6 @@ concurrent subagents), and cross-model review.
 ### Testing
 Tested on:
 - Windows 11 with spec-kit 0.1.0 (specify-cli)
-- Project: docs-iq (DocsIQ content management system)
 
 ### Additional Notes
 - Provides 2 commands: `speckit.fleet.run` (alias `speckit.fleet`) and

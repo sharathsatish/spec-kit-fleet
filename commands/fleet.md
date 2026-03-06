@@ -23,7 +23,11 @@ disable-model-invocation: true
 $ARGUMENTS
 ```
 
-You **MUST** consider the user input before proceeding (if not empty). The user may provide a feature description (start from Phase 1) or a phase override (resume from that phase).
+You **MUST** consider the user input before proceeding (if not empty). Classify the input:
+
+1. **Feature description** (e.g., "Build a capability browser that lets users..."): Store as `FEATURE_DESCRIPTION`. This will be passed verbatim to `speckit.specify` in Phase 1. Skip artifact detection if no `FEATURE_DIR` is found -- go straight to Phase 1.
+2. **Phase override** (e.g., "resume at Phase 5" or "start from plan"): Override the auto-detected resume point.
+3. **Empty**: Run artifact detection and resume from the detected phase.
 
 ---
 
@@ -159,7 +163,9 @@ This check runs only once on first invocation. It does NOT block the workflow (e
 
 Run `{SCRIPT}` from the repo root to get the feature directory paths as JSON. Parse the output to get `FEATURE_DIR`.
 
-If the script fails (e.g., not on a feature branch), ask the user for the feature description and start from Phase 1.
+If the script fails (e.g., not on a feature branch):
+- If `FEATURE_DESCRIPTION` was provided in `$ARGUMENTS`, proceed directly to Phase 1 -- pass the description to `speckit.specify` and it will create the feature directory.
+- If `$ARGUMENTS` is empty, ask the user for the feature description, then start Phase 1.
 
 ### Step 2: Check model configuration
 
@@ -256,7 +262,7 @@ Then ask: *"Detected progress above. Resume at Phase {N} ({name}), or override t
 - **Verify extension not installed**: If `.specify/extensions/verify/extension.yml` doesn't exist, prompt to install. If user declines, skip Phase 9.
 - **Verify completion marker**: After Phase 9 (Verify) completes, create `{FEATURE_DIR}/.verify-done` with timestamp. This distinguishes "verify ran" from "verify never ran."
 - **Checklists may be skipped**: Some features don't use checklists. If `tasks.md` exists but `checklists/` doesn't, treat Phase 4 as skipped.
-- **Fresh branch, no specs dir**: Start from Phase 1 -- ask for the feature description.
+- **Fresh branch, no specs dir**: Start from Phase 1. Use `FEATURE_DESCRIPTION` from `$ARGUMENTS` if provided; otherwise ask the user.
 - **User says "start over"**: Re-run from Phase 1 regardless of existing artifacts. Warn that this will overwrite existing artifacts and get confirmation.
 
 ### Stale Artifact Detection
@@ -281,7 +287,10 @@ For each phase:
 ```
 1. Mark the phase as in-progress in the todo list
 2. Announce: "**Phase N: {Name}** -- delegating to {agent}..."
-3. Delegate to the agent (pass relevant arguments)
+3. Delegate to the agent with relevant arguments:
+   - Phase 1 (Specify): pass FEATURE_DESCRIPTION from $ARGUMENTS as the argument
+   - Phase 2 (Clarify): pass the feature description and any user feedback
+   - All other phases: pass the feature description and any user-provided refinements
 4. Summarize the agent's output concisely
 5. Ask: "Ready to proceed to Phase N+1 ({next name}), or would you like to revise?"
 6. Wait for user response
