@@ -40,7 +40,7 @@ The fleet orchestrator chains 10 phases into a single command, detecting partial
 ### From GitHub Release
 
 ```bash
-specify extension add fleet --from https://github.com/sharathsatish/spec-kit-fleet/archive/refs/tags/v1.0.0.zip
+specify extension add fleet --from https://github.com/sharathsatish/spec-kit-fleet/archive/refs/tags/v1.0.1.zip
 ```
 
 ### Local Development
@@ -53,15 +53,15 @@ specify extension add --dev /path/to/spec-kit-fleet
 
 ```bash
 specify extension list
-# Should show: fleet (1.0.0) -- Fleet Orchestrator
+# Should show: fleet (1.0.1) -- Fleet Orchestrator
 ```
 
 After installation, the following commands are registered:
 
-| Command | Alias | Description |
-|---------|-------|-------------|
-| `speckit.fleet.run` | `speckit.fleet` | Full lifecycle orchestrator |
-| `speckit.fleet.review` | `speckit.review` | Cross-model pre-implementation review |
+| Command | Description |
+|---------|-------------|
+| `speckit.fleet.run` | Full lifecycle orchestrator |
+| `speckit.fleet.review` | Cross-model pre-implementation review |
 
 ## Usage
 
@@ -70,13 +70,13 @@ After installation, the following commands are registered:
 In VS Code Copilot Chat:
 
 ```
-/speckit.fleet Build a capability browser that lets users search and filter available capabilities
+/speckit.fleet.run Build a capability browser that lets users search and filter available capabilities
 ```
 
 Or with no arguments to auto-detect progress on the current feature branch:
 
 ```
-/speckit.fleet
+/speckit.fleet.run
 ```
 
 ### Resume Mid-Workflow
@@ -97,7 +97,7 @@ You can confirm or override to any phase.
 ### Run Review Standalone
 
 ```
-/speckit.review
+/speckit.fleet.review
 ```
 
 This runs the cross-model evaluation independently (read-only, no file modifications).

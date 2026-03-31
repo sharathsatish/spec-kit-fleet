@@ -16,8 +16,8 @@ Add this under `"extensions"` in `extensions/catalog.community.json` in the
   "id": "fleet",
   "description": "Orchestrate a full feature lifecycle with human-in-the-loop gates across all SpecKit phases.",
   "author": "sharathsatish",
-  "version": "1.0.0",
-  "download_url": "https://github.com/sharathsatish/spec-kit-fleet/archive/refs/tags/v1.0.0.zip",
+  "version": "1.0.1",
+  "download_url": "https://github.com/sharathsatish/spec-kit-fleet/archive/refs/tags/v1.0.1.zip",
   "repository": "https://github.com/sharathsatish/spec-kit-fleet",
   "homepage": "https://github.com/sharathsatish/spec-kit-fleet",
   "documentation": "https://github.com/sharathsatish/spec-kit-fleet/blob/main/README.md",
@@ -64,7 +64,7 @@ Insert alphabetically in the Available Extensions table:
 
 **Extension Name**: Fleet Orchestrator
 **Extension ID**: fleet
-**Version**: 1.0.0
+**Version**: 1.0.1
 **Author**: sharathsatish
 **Repository**: https://github.com/sharathsatish/spec-kit-fleet
 
@@ -79,7 +79,7 @@ concurrent subagents), and cross-model review.
 - [x] Valid extension.yml manifest
 - [x] README.md with installation and usage docs
 - [x] LICENSE file included
-- [ ] GitHub release created (v1.0.0)
+- [ ] GitHub release created (v1.0.1)
 - [x] Extension tested on real project
 - [x] All commands working
 - [x] No security vulnerabilities
@@ -91,8 +91,7 @@ Tested on:
 - Windows 11 with spec-kit 0.1.0 (specify-cli)
 
 ### Additional Notes
-- Provides 2 commands: `speckit.fleet.run` (alias `speckit.fleet`) and
-  `speckit.fleet.review` (alias `speckit.review`)
+- Provides 2 commands: `speckit.fleet.run` and `speckit.fleet.review`
 - Includes `after_tasks` hook for automatic cross-model review
 - Optional dependency on the verify extension (auto-prompts to install)
 - All files are pure ASCII for Windows cp1252 compatibility

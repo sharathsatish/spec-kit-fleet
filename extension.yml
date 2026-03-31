@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "fleet"
   name: "Fleet Orchestrator"
-  version: "1.0.0"
+  version: "1.0.1"
   description: "Orchestrate a full feature lifecycle with human-in-the-loop gates across all SpecKit phases."
   author: "sharathsatish"
   repository: "https://github.com/sharathsatish/spec-kit-fleet"
@@ -27,12 +27,10 @@ provides:
     - name: "speckit.fleet.run"
       file: "commands/fleet.md"
       description: "Orchestrate a full feature lifecycle with human-in-the-loop checkpoints through all SpecKit phases"
-      aliases: ["speckit.fleet"]
 
     - name: "speckit.fleet.review"
       file: "commands/review.md"
       description: "Cross-model evaluation of plan.md and tasks.md before implementation"
-      aliases: ["speckit.review"]
 
   config:
     - name: "fleet-config.yml"
