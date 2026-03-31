@@ -40,7 +40,7 @@ The fleet orchestrator chains 10 phases into a single command, detecting partial
 ### From GitHub Release
 
 ```bash
-specify extension add fleet --from https://github.com/sharathsatish/spec-kit-fleet/archive/refs/tags/v1.0.1.zip
+specify extension add fleet --from https://github.com/sharathsatish/spec-kit-fleet/archive/refs/tags/v1.1.0.zip
 ```
 
 ### Local Development
@@ -53,7 +53,7 @@ specify extension add --dev /path/to/spec-kit-fleet
 
 ```bash
 specify extension list
-# Should show: fleet (1.0.1) -- Fleet Orchestrator
+# Should show: fleet (1.1.0) -- Fleet Orchestrator
 ```
 
 After installation, the following commands are registered:
