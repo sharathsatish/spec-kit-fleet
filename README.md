@@ -123,7 +123,7 @@ models:
 # Verify extension auto-install prompt
 verify:
   auto_prompt_install: true
-  install_url: "https://github.com/ismaelJimenez/spec-kit-verify/archive/refs/tags/v1.0.0.zip"
+  install_url: "https://github.com/ismaelJimenez/spec-kit-verify/archive/refs/tags/v1.0.3.zip"
 ```
 
 | Setting | Default | Description |
@@ -197,7 +197,7 @@ On first run, the fleet asks which model to use for review. To change it permane
 If Phase 9 reports the verify extension isn't installed, run:
 
 ```bash
-specify extension add verify --from https://github.com/ismaelJimenez/spec-kit-verify/archive/refs/tags/v1.0.0.zip
+specify extension add verify --from https://github.com/ismaelJimenez/spec-kit-verify/archive/refs/tags/v1.0.3.zip
 ```
 
 Or set `verify.auto_prompt_install: false` in config to always skip verification.

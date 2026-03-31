@@ -343,7 +343,7 @@ Before delegating to `speckit.verify`, check if the extension is installed:
 2. If **missing**, ask the user:
    > The verify extension is not installed. Install it now?
    > ```
-   > specify extension add verify --from https://github.com/ismaelJimenez/spec-kit-verify/archive/refs/tags/v1.0.0.zip
+   > specify extension add verify --from https://github.com/ismaelJimenez/spec-kit-verify/archive/refs/tags/v1.0.3.zip
    > ```
 3. If user approves, run the install command in the terminal
 4. If user declines, skip Phase 9 and proceed to Phase 10 (CI)
